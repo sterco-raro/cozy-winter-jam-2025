@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://ihvo68ayk1vv"]
+[gd_scene load_steps=8 format=3 uid="uid://ihvo68ayk1vv"]
 
 [ext_resource type="Script" path="res://Scenes/main.gd" id="1_gppg3"]
 [ext_resource type="Texture2D" uid="uid://cen1fed6pvnkh" path="res://Assets/Graphics/background.png" id="2_hv02j"]
 [ext_resource type="Shader" path="res://Assets/Shaders/waving_particles.gdshader" id="3_lx0so"]
 [ext_resource type="Texture2D" uid="uid://0pnl5ch08k8r" path="res://Assets/Graphics/desk.png" id="3_pffxn"]
 [ext_resource type="Texture2D" uid="uid://mr870308wmop" path="res://Assets/Graphics/window.png" id="4_lx7sw"]
+[ext_resource type="AudioStream" uid="uid://dup6l4pcclh4l" path="res://Assets/Audio/wind-during-snow-storm-2-17562.mp3" id="6_ufcmc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmqem"]
 shader = ExtResource("3_lx0so")
@@ -47,3 +48,8 @@ texture = ExtResource("3_pffxn")
 metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="AmbianceMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_ufcmc")
+volume_db = 3.0
+autoplay = true
