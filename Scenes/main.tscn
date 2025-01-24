@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://ihvo68ayk1vv"]
+[gd_scene load_steps=10 format=3 uid="uid://ihvo68ayk1vv"]
 
 [ext_resource type="Script" path="res://Scenes/main.gd" id="1_gppg3"]
 [ext_resource type="Texture2D" uid="uid://cen1fed6pvnkh" path="res://Assets/Graphics/background.png" id="2_hv02j"]
 [ext_resource type="Shader" path="res://Assets/Shaders/waving_particles.gdshader" id="3_lx0so"]
 [ext_resource type="Texture2D" uid="uid://0pnl5ch08k8r" path="res://Assets/Graphics/desk.png" id="3_pffxn"]
 [ext_resource type="Texture2D" uid="uid://mr870308wmop" path="res://Assets/Graphics/window.png" id="4_lx7sw"]
+[ext_resource type="Texture2D" uid="uid://74broqd2mgrp" path="res://Assets/Graphics/gnome-idle.png" id="5_8xajt"]
+[ext_resource type="Texture2D" uid="uid://rd5usoaww6po" path="res://Assets/Graphics/gnome-magic.png" id="6_puo3o"]
 [ext_resource type="AudioStream" uid="uid://dup6l4pcclh4l" path="res://Assets/Audio/wind-during-snow-storm-2-17562.mp3" id="6_ufcmc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmqem"]
@@ -26,10 +28,11 @@ shader_parameter/near_color = Color(1, 1, 1, 1)
 script = ExtResource("1_gppg3")
 
 [node name="Background" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Background"]
 texture = ExtResource("2_hv02j")
-metadata/_edit_lock_ = true
 
 [node name="TextureRect" type="TextureRect" parent="Background"]
 material = SubResource("ShaderMaterial_qmqem")
@@ -38,16 +41,34 @@ offset_top = -358.0
 offset_right = 488.0
 offset_bottom = -230.0
 texture = ExtResource("4_lx7sw")
+
+[node name="Gnome" type="Node2D" parent="."]
+position = Vector2(-350, 291)
+
+[node name="SpriteIdle" type="Sprite2D" parent="Gnome"]
+texture = ExtResource("5_8xajt")
+metadata/_edit_lock_ = true
+
+[node name="SpriteMagic" type="Sprite2D" parent="Gnome"]
+visible = false
+texture = ExtResource("6_puo3o")
 metadata/_edit_lock_ = true
 
 [node name="Desk" type="Node2D" parent="."]
 position = Vector2(0, -20)
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Desk"]
 texture = ExtResource("3_pffxn")
-metadata/_edit_lock_ = true
+
+[node name="Area2D" type="Area2D" parent="Desk"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Desk/Area2D"]
+polygon = PackedVector2Array(-400, -152, -445, 118, 449, 116, 401, -154)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="AmbianceMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_ufcmc")
