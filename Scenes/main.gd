@@ -10,9 +10,8 @@ var interactables: Array[Interactable]
 
 var prefab_interactable: PackedScene = preload("res://Scenes/interactable.tscn")
 
-var items_data = [
-	[ "res://Assets/Graphics/pencils-broken.png", "res://Assets/Graphics/pencils-fixed.png"]
-]
+@export
+var textures: Array[Array] = []
 
 var is_gnome_surprised: bool = false
 #endregion
@@ -41,6 +40,9 @@ func _ready() -> void:
 
 	decorations.append($Decoration1)
 	decorations.append($Decoration2)
+	decorations.append($Decoration3)
+	decorations.append($Decoration4)
+	#decorations.append($Decoration5)
 	decorations.shuffle()
 
 	# Spawn random interactable objects
@@ -83,10 +85,9 @@ func reset() -> void:
 		obj.id = i
 		obj.position = Vector2(x, y)
 
-		var texture = ImageTexture.new()
-		var data = items_data.pick_random()
-		obj.texture_broken = texture.create_from_image(Image.load_from_file(data[0]))
-		obj.texture_fixed = texture.create_from_image(Image.load_from_file(data[1]))
+		var data = textures.pick_random()
+		obj.texture_broken = data[0]
+		obj.texture_fixed = data[1]
 
 		interactables.append(obj)
 
@@ -100,11 +101,11 @@ func is_valid_spawn_point(point: Vector2) -> bool:
 			return false
 	return true
 
-func _on_task_start(id: int) -> void:
+func _on_task_start(_id: int) -> void:
 	EventBus.action_in_progress = true
 	gnome.show_exclamation_mark(true)
 
-func _on_task_end(id: int) -> void:
+func _on_task_end(_id: int) -> void:
 	gnome.show_exclamation_mark(false)
 	# TODO add different decorations
 	if decorations.size() > 0:

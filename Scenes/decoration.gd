@@ -11,7 +11,7 @@ var texture: Texture
 @export_category("Particles")
 @export
 var amount: int = 8
-@export_range(1, 100)
+@export_range(1, 500)
 var emission_box_x: int = 1
 @export_range(1, 100)
 var emission_box_y: int = 1
@@ -33,10 +33,11 @@ func _ready() -> void:
 	# Amount of particles to spawn
 	_particles.amount = amount
 	# Emission shape
-	var material: ParticleProcessMaterial = _particles.process_material
-	material.emission_box_extents = Vector3(emission_box_x, emission_box_y, 1)
+	_particles.process_material.emission_box_extents = Vector3(emission_box_x, emission_box_y, 1)
 
 func _on_vfx_start() -> void:
+	_particles.amount = amount
+	_particles.process_material.emission_box_extents = Vector3(emission_box_x, emission_box_y, 1)
 	_particles.emitting = true
 
 func _on_vfx_stop() -> void:

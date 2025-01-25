@@ -1,7 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://ihvo68ayk1vv"]
+[gd_scene load_steps=22 format=3 uid="uid://ihvo68ayk1vv"]
 
 [ext_resource type="Script" path="res://Scenes/main.gd" id="1_gppg3"]
 [ext_resource type="Texture2D" uid="uid://cen1fed6pvnkh" path="res://Assets/Graphics/background.png" id="2_hv02j"]
+[ext_resource type="Texture2D" uid="uid://c70qbvebew7xy" path="res://Assets/Graphics/pencils-broken.png" id="2_unvoj"]
+[ext_resource type="Texture2D" uid="uid://fhft4ha3ane7" path="res://Assets/Graphics/pencils-fixed.png" id="3_1f3g2"]
 [ext_resource type="Shader" path="res://Assets/Shaders/waving_particles.gdshader" id="3_lx0so"]
 [ext_resource type="Texture2D" uid="uid://0pnl5ch08k8r" path="res://Assets/Graphics/desk.png" id="3_pffxn"]
 [ext_resource type="Texture2D" uid="uid://mr870308wmop" path="res://Assets/Graphics/window.png" id="4_lx7sw"]
@@ -12,8 +14,11 @@
 [ext_resource type="Texture2D" uid="uid://xderqa2f6i7o" path="res://Assets/Graphics/exclamation-mark.png" id="8_4oyq0"]
 [ext_resource type="AudioStream" uid="uid://dcwkxtketskvh" path="res://Assets/Audio/christmas-bells-04-279696.mp3" id="8_grmal"]
 [ext_resource type="PackedScene" uid="uid://c11moj128sim1" path="res://Scenes/decoration.tscn" id="9_3ub6o"]
-[ext_resource type="Texture2D" uid="uid://dy3d3o0hv03na" path="res://Assets/Graphics/present.png" id="10_8u3li"]
 [ext_resource type="AudioStream" uid="uid://rmccstn0yha1" path="res://Assets/Audio/peluquero-1-100241.mp3" id="10_uxqms"]
+[ext_resource type="Texture2D" uid="uid://7fl4v5kfifdj" path="res://Assets/Graphics/present-red.png" id="12_fpbki"]
+[ext_resource type="Texture2D" uid="uid://3jk4w2lsyxyp" path="res://Assets/Graphics/present-green.png" id="13_gi53u"]
+[ext_resource type="Texture2D" uid="uid://byax3kins21ta" path="res://Assets/Graphics/lights.png" id="14_yks3h"]
+[ext_resource type="Texture2D" uid="uid://bfqwgdcrntdet" path="res://Assets/Graphics/wreath.png" id="15_xpdy0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmqem"]
 shader = ExtResource("3_lx0so")
@@ -35,6 +40,7 @@ size = Vector2(95, 126)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_gppg3")
+textures = Array[Array]([[ExtResource("2_unvoj"), ExtResource("3_1f3g2")]])
 
 [node name="Background" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
@@ -94,7 +100,7 @@ stream = ExtResource("10_uxqms")
 
 [node name="Decoration1" parent="." instance=ExtResource("9_3ub6o")]
 position = Vector2(237, 307)
-texture = ExtResource("10_8u3li")
+texture = ExtResource("12_fpbki")
 amount = 12
 emission_box_x = 60
 emission_box_y = 30
@@ -102,10 +108,18 @@ metadata/_edit_lock_ = true
 
 [node name="Decoration2" parent="." instance=ExtResource("9_3ub6o")]
 position = Vector2(-196, 203)
-texture = ExtResource("10_8u3li")
+texture = ExtResource("13_gi53u")
 amount = 12
 emission_box_x = 60
 emission_box_y = 30
+metadata/_edit_lock_ = true
+
+[node name="Decoration3" parent="." instance=ExtResource("9_3ub6o")]
+position = Vector2(0, -209)
+texture = ExtResource("14_yks3h")
+amount = 32
+emission_box_x = 460
+emission_box_y = 20
 metadata/_edit_lock_ = true
 
 [node name="Desk" type="Node2D" parent="."]
@@ -120,6 +134,13 @@ texture = ExtResource("3_pffxn")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Desk/Area2D"]
 polygon = PackedVector2Array(-400, -152, -445, 118, 449, 116, 401, -154)
+
+[node name="Decoration4" parent="." instance=ExtResource("9_3ub6o")]
+position = Vector2(0, 165)
+texture = ExtResource("15_xpdy0")
+amount = 24
+emission_box_x = 320
+emission_box_y = 30
 
 [node name="Objects" type="Node2D" parent="."]
 

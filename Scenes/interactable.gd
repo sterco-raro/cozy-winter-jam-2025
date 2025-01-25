@@ -12,7 +12,6 @@ var texture_broken: Texture
 var texture_fixed: Texture
 
 # Status
-var _active: bool = false
 var _action_complete: bool = false
 
 #region ONREADY PROPS
