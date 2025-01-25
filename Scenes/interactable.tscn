@@ -1,0 +1,104 @@
+[gd_scene load_steps=11 format=3 uid="uid://b28lmd6t4lx"]
+
+[ext_resource type="Script" path="res://Scenes/interactable.gd" id="1_f68tl"]
+[ext_resource type="AudioStream" uid="uid://dg2qcset0xm2m" path="res://Assets/Audio/wipe-and-scrub-95793.mp3" id="3_odrpe"]
+[ext_resource type="Texture2D" uid="uid://ctyqtpav0uid6" path="res://Assets/Graphics/dust-clouds.png" id="4_eyybv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b7uwy"]
+size = Vector2(128, 128)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_g58pg"]
+particles_animation = true
+particles_anim_h_frames = 5
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_raicy"]
+offsets = PackedFloat32Array(0, 0.584906, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0xt63"]
+gradient = SubResource("Gradient_raicy")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gxcam"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(50, 50, 1)
+angle_min = -90.0
+angle_max = 90.0
+direction = Vector3(1, 1, 0)
+spread = 120.0
+orbit_velocity_min = -0.5
+orbit_velocity_max = 0.5
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_0xt63")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jrpn"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dbyj5"]
+bg_color = Color(0.249739, 0.798211, 0.717886, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Interactable" type="Node2D"]
+script = ExtResource("1_f68tl")
+
+[node name="SpriteBroken" type="Sprite2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="SpriteFixed" type="Sprite2D" parent="."]
+visible = false
+metadata/_edit_lock_ = true
+
+[node name="Area2D" type="Area2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_b7uwy")
+
+[node name="DustClouds" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_g58pg")
+emitting = false
+amount = 18
+process_material = SubResource("ParticleProcessMaterial_gxcam")
+texture = ExtResource("4_eyybv")
+fixed_fps = 60
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="TidyUpSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_odrpe")
+
+[node name="UI" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="ProgressBar" type="ProgressBar" parent="UI"]
+visible = false
+custom_minimum_size = Vector2(128, 10)
+offset_left = -64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 74.0
+theme_override_styles/background = SubResource("StyleBoxFlat_1jrpn")
+theme_override_styles/fill = SubResource("StyleBoxFlat_dbyj5")
+show_percentage = false
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

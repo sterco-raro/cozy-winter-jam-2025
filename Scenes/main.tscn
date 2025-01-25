@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ihvo68ayk1vv"]
+[gd_scene load_steps=12 format=3 uid="uid://ihvo68ayk1vv"]
 
 [ext_resource type="Script" path="res://Scenes/main.gd" id="1_gppg3"]
 [ext_resource type="Texture2D" uid="uid://cen1fed6pvnkh" path="res://Assets/Graphics/background.png" id="2_hv02j"]
@@ -6,8 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://0pnl5ch08k8r" path="res://Assets/Graphics/desk.png" id="3_pffxn"]
 [ext_resource type="Texture2D" uid="uid://mr870308wmop" path="res://Assets/Graphics/window.png" id="4_lx7sw"]
 [ext_resource type="Texture2D" uid="uid://74broqd2mgrp" path="res://Assets/Graphics/gnome-idle.png" id="5_8xajt"]
+[ext_resource type="Script" path="res://Scenes/gnome.gd" id="5_sdo1f"]
 [ext_resource type="Texture2D" uid="uid://rd5usoaww6po" path="res://Assets/Graphics/gnome-magic.png" id="6_puo3o"]
 [ext_resource type="AudioStream" uid="uid://dup6l4pcclh4l" path="res://Assets/Audio/wind-during-snow-storm-2-17562.mp3" id="6_ufcmc"]
+[ext_resource type="AudioStream" uid="uid://dcwkxtketskvh" path="res://Assets/Audio/christmas-bells-04-279696.mp3" id="8_grmal"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmqem"]
 shader = ExtResource("3_lx0so")
@@ -44,6 +46,7 @@ texture = ExtResource("4_lx7sw")
 
 [node name="Gnome" type="Node2D" parent="."]
 position = Vector2(-350, 291)
+script = ExtResource("5_sdo1f")
 
 [node name="SpriteIdle" type="Sprite2D" parent="Gnome"]
 texture = ExtResource("5_8xajt")
@@ -53,6 +56,13 @@ metadata/_edit_lock_ = true
 visible = false
 texture = ExtResource("6_puo3o")
 metadata/_edit_lock_ = true
+
+[node name="MagicTimer" type="Timer" parent="Gnome"]
+wait_time = 4.0
+one_shot = true
+
+[node name="MagicSFX" type="AudioStreamPlayer" parent="Gnome"]
+stream = ExtResource("8_grmal")
 
 [node name="Desk" type="Node2D" parent="."]
 position = Vector2(0, -20)
@@ -74,3 +84,6 @@ metadata/_edit_lock_ = true
 stream = ExtResource("6_ufcmc")
 volume_db = 3.0
 autoplay = true
+
+[connection signal="magic_end" from="Gnome" to="." method="_on_gnome_magic_end"]
+[connection signal="timeout" from="Gnome/MagicTimer" to="Gnome" method="_on_magic_timer_timeout"]

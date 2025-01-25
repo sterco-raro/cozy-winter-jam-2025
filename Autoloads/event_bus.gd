@@ -1,6 +1,6 @@
 extends Node
 
 #region DATA SIGNALS
-# Task id, name and chilling value
-signal task_complete(id: int, name: String, value: int)
+signal task_start(id: int, title: String)
+signal task_end(id: int, title: String)
 #endregion
