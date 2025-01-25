@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://ihvo68ayk1vv"]
+[gd_scene load_steps=17 format=3 uid="uid://ihvo68ayk1vv"]
 
 [ext_resource type="Script" path="res://Scenes/main.gd" id="1_gppg3"]
 [ext_resource type="Texture2D" uid="uid://cen1fed6pvnkh" path="res://Assets/Graphics/background.png" id="2_hv02j"]
@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://dcwkxtketskvh" path="res://Assets/Audio/christmas-bells-04-279696.mp3" id="8_grmal"]
 [ext_resource type="PackedScene" uid="uid://c11moj128sim1" path="res://Scenes/decoration.tscn" id="9_3ub6o"]
 [ext_resource type="Texture2D" uid="uid://dy3d3o0hv03na" path="res://Assets/Graphics/present.png" id="10_8u3li"]
+[ext_resource type="AudioStream" uid="uid://rmccstn0yha1" path="res://Assets/Audio/peluquero-1-100241.mp3" id="10_uxqms"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmqem"]
 shader = ExtResource("3_lx0so")
@@ -76,6 +77,7 @@ one_shot = true
 
 [node name="MagicSFX" type="AudioStreamPlayer" parent="Gnome"]
 stream = ExtResource("8_grmal")
+volume_db = -5.0
 
 [node name="Area2D" type="Area2D" parent="Gnome"]
 
@@ -86,6 +88,9 @@ shape = SubResource("RectangleShape2D_j77xf")
 [node name="SurpriseTimer" type="Timer" parent="Gnome"]
 wait_time = 0.3
 one_shot = true
+
+[node name="SurpriseSFX" type="AudioStreamPlayer" parent="Gnome"]
+stream = ExtResource("10_uxqms")
 
 [node name="Decoration1" parent="." instance=ExtResource("9_3ub6o")]
 position = Vector2(237, 307)

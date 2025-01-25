@@ -13,6 +13,8 @@ var prefab_interactable: PackedScene = preload("res://Scenes/interactable.tscn")
 var items_data = [
 	[ "res://Assets/Graphics/pencils-broken.png", "res://Assets/Graphics/pencils-fixed.png"]
 ]
+
+var is_gnome_surprised: bool = false
 #endregion
 
 #region ONREADY
@@ -20,6 +22,8 @@ var items_data = [
 var gnome: MagicGnome = $Gnome
 @onready
 var gnome_surprised_timer: Timer = $Gnome/SurpriseTimer
+@onready
+var gnome_surprised_sfx: AudioStreamPlayer = $Gnome/SurpriseSFX
 @onready
 var _interactables_container: Node2D = $Objects
 #endregion
@@ -115,11 +119,14 @@ func _on_gnome_magic_end() -> void:
 	active_decoration = null
 
 func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if not EventBus.action_in_progress and event is InputEventMouseButton:
+	if not is_gnome_surprised and not EventBus.action_in_progress and event is InputEventMouseButton:
 		if event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
 			gnome.show_exclamation_mark(true)
 			gnome_surprised_timer.start()
+			gnome_surprised_sfx.play()
+			is_gnome_surprised = true
 
 func _on_surprise_timer_timeout() -> void:
 	if not EventBus.action_in_progress:
 		gnome.show_exclamation_mark(false)
+	is_gnome_surprised = false
