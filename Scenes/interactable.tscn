@@ -77,7 +77,6 @@ emitting = false
 amount = 18
 process_material = SubResource("ParticleProcessMaterial_gxcam")
 texture = ExtResource("4_eyybv")
-fixed_fps = 60
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0

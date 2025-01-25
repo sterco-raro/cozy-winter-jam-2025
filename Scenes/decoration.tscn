@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://c11moj128sim1"]
+
+[ext_resource type="Script" path="res://Scenes/decoration.gd" id="1_6j72c"]
+[ext_resource type="Texture2D" uid="uid://cwu34mn7xuux" path="res://Assets/Graphics/stars.png" id="2_2hgna"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_joa6k"]
+particles_animation = true
+particles_anim_h_frames = 5
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_s0frp"]
+offsets = PackedFloat32Array(0, 0.781132, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bcjac"]
+gradient = SubResource("Gradient_s0frp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ut0va"]
+lifetime_randomness = 0.2
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+radial_velocity_min = 10.0
+radial_velocity_max = 10.0
+gravity = Vector3(0, -98, 0)
+radial_accel_min = 5.0
+radial_accel_max = 10.0
+color_ramp = SubResource("GradientTexture1D_bcjac")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[node name="Decoration" type="Node2D"]
+script = ExtResource("1_6j72c")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Sparkles" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_joa6k")
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_ut0va")
+texture = ExtResource("2_2hgna")
+lifetime = 0.8

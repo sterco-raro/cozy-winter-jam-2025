@@ -3,15 +3,19 @@ class_name Interactable extends Node2D
 # Identity
 @export
 var id: int
+
+# Sprites
+@export_category("Sprites")
 @export
-var title: String
+var texture_broken: Texture
+@export
+var texture_fixed: Texture
 
 # Status
 var _active: bool = false
 var _action_complete: bool = false
 
 #region ONREADY PROPS
-
 # Sprites
 @onready
 var _sprite_broken: Sprite2D = $SpriteBroken
@@ -32,6 +36,9 @@ var _progress: ProgressBar = $UI/ProgressBar
 func _ready() -> void:
 	_progress.min_value = 0
 	_progress.max_value = _timer.wait_time
+	# Assign sprites
+	_sprite_broken.texture = texture_broken
+	_sprite_fixed.texture = texture_fixed
 
 func _process(_delta: float) -> void:
 	if not _timer.paused:
@@ -42,24 +49,22 @@ func toggle_sprite() -> void:
 	_sprite_fixed.visible = not _sprite_fixed.visible
 
 func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if not _active and not _action_complete:
+	if not EventBus.action_in_progress and not _action_complete:
 		if event is InputEventMouseButton:
 			if event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
-				_active = true
 				# Start task
 				_timer.start()
 				_sounds.play()
 				_particles.emitting = true
 				_progress.visible = true
-				EventBus.task_start.emit(id, title)
+				EventBus.task_start.emit(id)
 
 func _on_timer_timeout() -> void:
 	# Task complete
-	_active = false
 	_action_complete = true
 	if _sounds.playing:
 		_sounds.stop()
 	_particles.emitting = false
 	_progress.visible = false
 	toggle_sprite()
-	EventBus.task_end.emit(id, title)
+	EventBus.task_end.emit(id)

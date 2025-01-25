@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ihvo68ayk1vv"]
+[gd_scene load_steps=16 format=3 uid="uid://ihvo68ayk1vv"]
 
 [ext_resource type="Script" path="res://Scenes/main.gd" id="1_gppg3"]
 [ext_resource type="Texture2D" uid="uid://cen1fed6pvnkh" path="res://Assets/Graphics/background.png" id="2_hv02j"]
@@ -9,7 +9,10 @@
 [ext_resource type="Script" path="res://Scenes/gnome.gd" id="5_sdo1f"]
 [ext_resource type="Texture2D" uid="uid://rd5usoaww6po" path="res://Assets/Graphics/gnome-magic.png" id="6_puo3o"]
 [ext_resource type="AudioStream" uid="uid://dup6l4pcclh4l" path="res://Assets/Audio/wind-during-snow-storm-2-17562.mp3" id="6_ufcmc"]
+[ext_resource type="Texture2D" uid="uid://xderqa2f6i7o" path="res://Assets/Graphics/exclamation-mark.png" id="8_4oyq0"]
 [ext_resource type="AudioStream" uid="uid://dcwkxtketskvh" path="res://Assets/Audio/christmas-bells-04-279696.mp3" id="8_grmal"]
+[ext_resource type="PackedScene" uid="uid://c11moj128sim1" path="res://Scenes/decoration.tscn" id="9_3ub6o"]
+[ext_resource type="Texture2D" uid="uid://dy3d3o0hv03na" path="res://Assets/Graphics/present.png" id="10_8u3li"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmqem"]
 shader = ExtResource("3_lx0so")
@@ -25,6 +28,9 @@ shader_parameter/wave_speed = 1.0
 shader_parameter/wave_rotation = 0.2
 shader_parameter/far_color = Color(0.764122, 0.861918, 0.989129, 1)
 shader_parameter/near_color = Color(1, 1, 1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j77xf"]
+size = Vector2(95, 126)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_gppg3")
@@ -47,6 +53,7 @@ texture = ExtResource("4_lx7sw")
 [node name="Gnome" type="Node2D" parent="."]
 position = Vector2(-350, 291)
 script = ExtResource("5_sdo1f")
+metadata/_edit_group_ = true
 
 [node name="SpriteIdle" type="Sprite2D" parent="Gnome"]
 texture = ExtResource("5_8xajt")
@@ -57,12 +64,44 @@ visible = false
 texture = ExtResource("6_puo3o")
 metadata/_edit_lock_ = true
 
+[node name="SpriteExclamationMark" type="Sprite2D" parent="Gnome"]
+visible = false
+position = Vector2(-20, -76)
+rotation = -0.261799
+texture = ExtResource("8_4oyq0")
+
 [node name="MagicTimer" type="Timer" parent="Gnome"]
 wait_time = 4.0
 one_shot = true
 
 [node name="MagicSFX" type="AudioStreamPlayer" parent="Gnome"]
 stream = ExtResource("8_grmal")
+
+[node name="Area2D" type="Area2D" parent="Gnome"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gnome/Area2D"]
+position = Vector2(-0.5, 1)
+shape = SubResource("RectangleShape2D_j77xf")
+
+[node name="SurpriseTimer" type="Timer" parent="Gnome"]
+wait_time = 0.3
+one_shot = true
+
+[node name="Decoration1" parent="." instance=ExtResource("9_3ub6o")]
+position = Vector2(237, 307)
+texture = ExtResource("10_8u3li")
+amount = 12
+emission_box_x = 60
+emission_box_y = 30
+metadata/_edit_lock_ = true
+
+[node name="Decoration2" parent="." instance=ExtResource("9_3ub6o")]
+position = Vector2(-196, 203)
+texture = ExtResource("10_8u3li")
+amount = 12
+emission_box_x = 60
+emission_box_y = 30
+metadata/_edit_lock_ = true
 
 [node name="Desk" type="Node2D" parent="."]
 position = Vector2(0, -20)
@@ -77,6 +116,8 @@ texture = ExtResource("3_pffxn")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Desk/Area2D"]
 polygon = PackedVector2Array(-400, -152, -445, 118, 449, 116, 401, -154)
 
+[node name="Objects" type="Node2D" parent="."]
+
 [node name="Camera2D" type="Camera2D" parent="."]
 metadata/_edit_lock_ = true
 
@@ -87,3 +128,5 @@ autoplay = true
 
 [connection signal="magic_end" from="Gnome" to="." method="_on_gnome_magic_end"]
 [connection signal="timeout" from="Gnome/MagicTimer" to="Gnome" method="_on_magic_timer_timeout"]
+[connection signal="input_event" from="Gnome/Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="timeout" from="Gnome/SurpriseTimer" to="." method="_on_surprise_timer_timeout"]
