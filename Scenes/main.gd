@@ -67,6 +67,7 @@ func reset() -> void:
 	var x: int
 	var y: int
 	var obj: Interactable
+	textures.shuffle()
 	# One object for each available reward
 	for i in range(decorations.size()):
 		# Choose random object position
@@ -80,7 +81,7 @@ func reset() -> void:
 		obj.id = i
 		obj.position = Vector2(x, y)
 
-		var data = textures.pick_random()
+		var data = textures.pop_back()
 		obj.texture_broken = data[0]
 		obj.texture_fixed = data[1]
 
