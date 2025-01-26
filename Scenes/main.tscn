@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://ihvo68ayk1vv"]
+[gd_scene load_steps=26 format=3 uid="uid://ihvo68ayk1vv"]
 
 [ext_resource type="Script" path="res://Scenes/main.gd" id="1_gppg3"]
 [ext_resource type="Texture2D" uid="uid://cen1fed6pvnkh" path="res://Assets/Graphics/background.png" id="2_hv02j"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://Scenes/gnome.gd" id="5_sdo1f"]
 [ext_resource type="Texture2D" uid="uid://rd5usoaww6po" path="res://Assets/Graphics/gnome-magic.png" id="6_puo3o"]
 [ext_resource type="AudioStream" uid="uid://dup6l4pcclh4l" path="res://Assets/Audio/wind-during-snow-storm-2-17562.mp3" id="6_ufcmc"]
+[ext_resource type="Texture2D" uid="uid://co0sm7xaio6sf" path="res://Assets/Graphics/floor.png" id="7_deh6j"]
 [ext_resource type="Texture2D" uid="uid://xderqa2f6i7o" path="res://Assets/Graphics/exclamation-mark.png" id="8_4oyq0"]
 [ext_resource type="AudioStream" uid="uid://dcwkxtketskvh" path="res://Assets/Audio/christmas-bells-04-279696.mp3" id="8_grmal"]
 [ext_resource type="PackedScene" uid="uid://c11moj128sim1" path="res://Scenes/decoration.tscn" id="9_3ub6o"]
@@ -19,6 +20,8 @@
 [ext_resource type="Texture2D" uid="uid://3jk4w2lsyxyp" path="res://Assets/Graphics/present-green.png" id="13_gi53u"]
 [ext_resource type="Texture2D" uid="uid://byax3kins21ta" path="res://Assets/Graphics/lights.png" id="14_yks3h"]
 [ext_resource type="Texture2D" uid="uid://bfqwgdcrntdet" path="res://Assets/Graphics/wreath.png" id="15_xpdy0"]
+[ext_resource type="PackedScene" uid="uid://b7pckjq1otaqs" path="res://Scenes/ending_screen.tscn" id="20_2thqd"]
+[ext_resource type="AudioStream" uid="uid://ekf2e8fhi036" path="res://Assets/Audio/winning-82808.mp3" id="20_v1mgj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmqem"]
 shader = ExtResource("3_lx0so")
@@ -38,6 +41,9 @@ shader_parameter/near_color = Color(1, 1, 1, 1)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j77xf"]
 size = Vector2(95, 126)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uay5v"]
+bg_color = Color(0, 0, 0, 0.392157)
+
 [node name="Main" type="Node2D"]
 script = ExtResource("1_gppg3")
 textures = Array[Array]([[ExtResource("2_unvoj"), ExtResource("3_1f3g2")]])
@@ -46,7 +52,7 @@ textures = Array[Array]([[ExtResource("2_unvoj"), ExtResource("3_1f3g2")]])
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="Background"]
+[node name="Wall" type="Sprite2D" parent="Background"]
 texture = ExtResource("2_hv02j")
 
 [node name="TextureRect" type="TextureRect" parent="Background"]
@@ -56,6 +62,10 @@ offset_top = -358.0
 offset_right = 488.0
 offset_bottom = -230.0
 texture = ExtResource("4_lx7sw")
+
+[node name="Floor" type="Sprite2D" parent="Background"]
+position = Vector2(0, 250)
+texture = ExtResource("7_deh6j")
 
 [node name="Gnome" type="Node2D" parent="."]
 position = Vector2(-350, 291)
@@ -152,7 +162,27 @@ stream = ExtResource("6_ufcmc")
 volume_db = 3.0
 autoplay = true
 
+[node name="EndingTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="EndingSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("20_v1mgj")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Overlay" type="Panel" parent="HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uay5v")
+
+[node name="EndingScreen" parent="HUD" instance=ExtResource("20_2thqd")]
+
 [connection signal="magic_end" from="Gnome" to="." method="_on_gnome_magic_end"]
 [connection signal="timeout" from="Gnome/MagicTimer" to="Gnome" method="_on_magic_timer_timeout"]
 [connection signal="input_event" from="Gnome/Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="timeout" from="Gnome/SurpriseTimer" to="." method="_on_surprise_timer_timeout"]
+[connection signal="timeout" from="EndingTimer" to="." method="_on_ending_timer_timeout"]
